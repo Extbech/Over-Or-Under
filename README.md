@@ -34,6 +34,9 @@ round_3  26.002
 round_4  18.533
 round_5  13.574
 ```
+<div align="center" margin="10px">
+<img src="https://github.com/Extbech/Over-Or-Under/blob/main/over_or_under.png" alt="Chart" style="width:100%;" />
+</div>
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
