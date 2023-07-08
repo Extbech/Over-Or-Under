@@ -39,7 +39,7 @@ round_5  13.574
 </div>
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the GPL 3.0 License. See the LICENSE file for more details.
 
 Feel free to modify the code and adapt it to your needs.
 
