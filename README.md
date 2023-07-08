@@ -44,6 +44,6 @@ This project is licensed under the GPL 3.0 License. See the LICENSE file for mor
 Feel free to modify the code and adapt it to your needs.
 
 ## Acknowledgements
-The code in this repository was written by [Your Name]. It is based on the rules of the "Over or Under" card game.
+The code in this repository was written by Benjamin. It is based on the rules of the "Over or Under" card game.
 
 If you have any questions or suggestions, feel free to open an issue.
