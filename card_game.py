@@ -6,40 +6,47 @@ import matplotlib.pyplot as plt
 class Deck:
     def __init__(self):
         self.cards = [x for x in range(1, 14)] * 4
-        self.left_over_cards = []
         self.rounds_won = 0
 
     def draw_card(self):
         if len(self.cards) == 0:
             return False
+        count_list = {}
+        i = 1
+        while i < max(self.cards) + 1:
+            count_list[i] = self.cards.count(i)
+            i += 1
+        guessing_number = self.cards[len(self.cards) // 2]
         cardIndex = random.randint(0, len(self.cards) - 1)
         selected_card = self.cards.pop(cardIndex)
-        self.cards.sort()
-        guessing_number = round(sum(self.cards) / len(self.cards))
-        guessing_number_med = self.cards[len(self.cards) // 2]
 
-        # if guessing_number_med > 7 or guessing_number_med < 7:
-        #    print(f"guessing number cracked: {guessing_number_med}")
-
-        if len(self.left_over_cards) < 1:
-            self.left_over_cards.append(selected_card)
+        if guessing_number == selected_card:
+            self.rounds_won += 1
             return True
 
         elif selected_card > guessing_number:
-            if selected_card >= self.left_over_cards[-1]:
-                self.left_over_cards.append(selected_card)
+            updated_count = {k: v for k, v in count_list.items() if k > guessing_number}
+            guessing_number = max(updated_count)
+            if selected_card == guessing_number:
                 self.rounds_won += 1
                 return True
 
         elif selected_card <= guessing_number:
-            if selected_card <= self.left_over_cards[-1]:
-                self.left_over_cards.append(selected_card)
+            updated_count = {
+                k: v for k, v in count_list.items() if k <= guessing_number
+            }
+            new_guess = max(updated_count)
+            if guessing_number == new_guess:
+                del updated_count[new_guess]
+            new_guess = max(updated_count)
+            if selected_card == new_guess:
                 self.rounds_won += 1
                 return True
         else:
             return False
 
     def play_game(self):
+        self.cards.sort()
         while True:
             play = self.draw_card()
             if not play:
@@ -61,7 +68,7 @@ def get_win_percentage(win_list: list) -> list:
 
 if __name__ == "__main__":
     win_list = []
-    for _ in range(1000000):
+    for _ in range(10000000):
         deck = Deck()
         win_list.append(deck.play_game())
 
