@@ -1,45 +1,50 @@
 import random
 import pandas as pd
+import tqdm
 import matplotlib.pyplot as plt
 
+class Player:
+    def __init__(self):
+        self.unseen_cards = {i: 4 for i in range(1, 14)}
+
+    def make_first_guess(self):
+        return 1
+
+    def make_second_guess(self, is_over):
+        return 1
+
+    def found_card(self, i):
+        self.unseen_cards
+        return
 
 class Deck:
     def __init__(self):
         self.cards = [x for x in range(1, 14)] * 4
         self.rounds_won = 0
 
-    def draw_card(self):
+    def draw_card(self, player):
         if len(self.cards) == 0:
             return False
-        count_list = {}
-        i = 1
-        while i < max(self.cards) + 1:
-            count_list[i] = self.cards.count(i)
-            i += 1
-        guessing_number = self.cards[len(self.cards) // 2]
+        guessing_number = player.make_first_guess()
         cardIndex = random.randint(0, len(self.cards) - 1)
         selected_card = self.cards.pop(cardIndex)
 
         if guessing_number == selected_card:
+            player.found_card(guessing_number)
             self.rounds_won += 1
             return True
 
         elif selected_card > guessing_number:
-            updated_count = {k: v for k, v in count_list.items() if k > guessing_number}
-            guessing_number = max(updated_count)
+            guessing_number = player.make_second_guess(True)
             if selected_card == guessing_number:
+                player.found_card(guessing_number)
                 self.rounds_won += 1
                 return True
 
-        elif selected_card <= guessing_number:
-            updated_count = {
-                k: v for k, v in count_list.items() if k <= guessing_number
-            }
-            new_guess = max(updated_count)
-            if guessing_number == new_guess:
-                del updated_count[new_guess]
-            new_guess = max(updated_count)
+        elif selected_card < guessing_number:
+            guessing_number = player.make_second_guess(False)
             if selected_card == new_guess:
+                player.found_card(guessing_number)
                 self.rounds_won += 1
                 return True
         else:
@@ -47,11 +52,11 @@ class Deck:
 
     def play_game(self):
         self.cards.sort()
+        player = Player()
         while True:
-            play = self.draw_card()
+            play = self.draw_card(player)
             if not play:
                 return self.rounds_won
-
 
 def get_win_percentage(win_list: list) -> list:
     wins = []
@@ -65,10 +70,9 @@ def get_win_percentage(win_list: list) -> list:
         round_names.append(f"{rounds}")
     return wins, round_names
 
-
 if __name__ == "__main__":
     win_list = []
-    for _ in range(10000000):
+    for _ in tqdm.tqdm(range(100000)):
         deck = Deck()
         win_list.append(deck.play_game())
 
